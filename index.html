@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Привет, я Оля</title>
+</head>
+<body>
+  <h1>Привет, я Оля</h1>
+  <button id="click-btn">Нажми меня</button>
+  <p>Кликов: <span id="count">0</span></p>
+  <script>
+    const button = document.getElementById('click-btn');
+    const countSpan = document.getElementById('count');
+    let count = 0;
+    button.addEventListener('click', () => {
+      count++;
+      countSpan.textContent = count;
+    });
+  </script>
+</body>
+</html>
