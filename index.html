@@ -2,20 +2,532 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Привет, я Оля</title>
+  <title>Планер дизайна квартиры</title>
+  <style>
+    :root {
+      --bg: #f7f7fb;
+      --card: #ffffff;
+      --primary: #4b6bfb;
+      --accent: #1bba7a;
+      --text: #1f2a3d;
+      --muted: #5b667a;
+      --border: #e1e4ed;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 24px;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 12px;
+      font-weight: 700;
+    }
+
+    p { margin: 0 0 12px; }
+
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background: #e7ecff;
+      color: #1c309b;
+      border-radius: 999px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 8px 30px rgba(31, 42, 61, 0.04);
+    }
+
+    .card h3 {
+      margin-bottom: 8px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 4px 6px 4px 0;
+      padding: 6px 10px;
+      border-radius: 10px;
+      background: #eef1f8;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .pill .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .pill.success .dot { background: var(--accent); }
+
+    .list {
+      padding-left: 18px;
+      margin: 0 0 8px 0;
+    }
+
+    .list li { margin-bottom: 6px; }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    input, textarea, select, button {
+      font: inherit;
+    }
+
+    input, textarea, select {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(75, 107, 251, 0.15);
+    }
+
+    textarea { resize: vertical; min-height: 72px; }
+
+    button {
+      cursor: pointer;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 700;
+      color: white;
+      background: var(--primary);
+      transition: transform 0.1s ease, box-shadow 0.2s ease;
+    }
+
+    button.secondary { background: #0f172a; }
+    button.ghost {
+      background: transparent;
+      color: var(--primary);
+      border: 1px dashed var(--primary);
+    }
+
+    button:hover { box-shadow: 0 8px 20px rgba(75, 107, 251, 0.2); }
+    button:active { transform: translateY(1px); }
+
+    .room-card {
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 12px;
+      background: #fbfcff;
+    }
+
+    .room-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ecfdf3;
+      color: #0f6b42;
+      padding: 4px 8px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .muted { color: var(--muted); }
+
+    .inline-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .small {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px dashed var(--border);
+      margin: 14px 0;
+    }
+
+    .board {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .board .swatch {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--muted);
+      background: linear-gradient(135deg, #fff, #f3f6ff);
+    }
+  </style>
 </head>
 <body>
-  <h1>Привет, я Оля</h1>
-  <button id="click-btn">Нажми меня</button>
-  <p>Кликов: <span id="count">0</span></p>
+  <header>
+    <div>
+      <div class="badge">Планер дизайн-проекта</div>
+      <h1>Планер для проработки квартиры по помещениям</h1>
+      <p class="muted">Опирайтесь на фото плана от застройщика, фиксируйте задачи по каждой комнате, палитру, мудборды, 3D и инструкции для строителей.</p>
+    </div>
+    <div class="board">
+      <div class="swatch">3D</div>
+      <div class="swatch">CAD</div>
+      <div class="swatch">QA</div>
+    </div>
+  </header>
+
+  <section class="card">
+    <h2>Основные данные проекта</h2>
+    <div class="input-row">
+      <label>
+        Название проекта
+        <input id="project-name" placeholder="Квартира на Неве, 78 м²" />
+      </label>
+      <label>
+        Дизайнер / менеджер
+        <input id="project-owner" placeholder="Ольга Иванова" />
+      </label>
+      <label>
+        Ссылка или файл плана от застройщика
+        <input id="plan-link" placeholder="URL на фото или PDF" />
+      </label>
+      <label>
+        Стиль/направление
+        <input id="project-style" placeholder="Современная классика, минимализм" />
+      </label>
+    </div>
+    <label>
+      Заметки и вводные
+      <textarea id="project-notes" placeholder="Особенности объекта, ограничения, высота потолков, несущие стены"></textarea>
+    </label>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h3>Что собрать для каждой комнаты</h3>
+      <ul class="list">
+        <li>Параметры: площадь, высота, окна/двери, солнечная ориентация.</li>
+        <li>Функционал: сценарии использования, хранение, техника.</li>
+        <li>Палитра: 3–5 базовых цветов + акценты, подбор материалов.</li>
+        <li>Мудборд: референсы, материалы, текстуры.</li>
+        <li>3D: ракурсы, задачи для визуализатора, дедлайн.</li>
+        <li>ТЗ для строителей: уровни полов, потолки, инженерия.</li>
+        <li>Схемы: электрика, свет, мебель, сантехника, вентиляция.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Контрольная карта проекта</h3>
+      <div class="pill success"><span class="dot"></span> План помещения получен</div>
+      <div class="pill"><span class="dot"></span> Черновое зонирование</div>
+      <div class="pill"><span class="dot"></span> Согласование палитры</div>
+      <div class="pill"><span class="dot"></span> Мудборды по комнатам</div>
+      <div class="pill"><span class="dot"></span> 3D / визуализация</div>
+      <div class="pill"><span class="dot"></span> Технические схемы</div>
+      <p class="small muted">Используйте чекпоинты, чтобы понимать, что готово для передачи подрядчикам и визуализатору.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="room-header">
+      <h2>Комнаты и задачи</h2>
+      <div class="inline-actions">
+        <button id="add-sample" class="ghost">Добавить типовые комнаты</button>
+        <button id="clear-rooms" class="ghost">Очистить список</button>
+      </div>
+    </div>
+    <form id="room-form">
+      <div class="input-row">
+        <label>
+          Комната
+          <input id="room-name" required placeholder="Кухня-гостиная" />
+        </label>
+        <label>
+          Площадь (м²)
+          <input id="room-size" type="number" min="0" step="0.1" placeholder="20.5" />
+        </label>
+        <label>
+          Высота потолка (м)
+          <input id="room-height" type="number" min="0" step="0.01" placeholder="2.80" />
+        </label>
+        <label>
+          Стиль
+          <input id="room-style" placeholder="Сканди, минимализм" />
+        </label>
+      </div>
+      <div class="input-row">
+        <label>
+          Палитра (цвета/материалы)
+          <input id="room-palette" placeholder="Белый 9016, тёплый серый, дуб натуральный" />
+        </label>
+        <label>
+          Мудборд / референсы
+          <input id="room-moodboard" placeholder="Ссылки на Pinterest/Notion" />
+        </label>
+        <label>
+          3D / визуализация
+          <input id="room-visual" placeholder="Ракурсы, дедлайн" />
+        </label>
+      </div>
+      <label>
+        Задачи и ТЗ для строителей
+        <textarea id="room-tasks" placeholder="Перенести розетки, сделать закладные под шторы, предусмотреть приточно-вытяжку"></textarea>
+      </label>
+      <div class="inline-actions">
+        <button type="submit">Добавить комнату</button>
+        <button type="button" id="reset-form" class="ghost">Сбросить</button>
+      </div>
+    </form>
+
+    <hr class="divider" />
+    <div id="rooms"></div>
+  </section>
+
+  <section class="grid">
+    <div class="card">
+      <h3>Технические аспекты и схемы</h3>
+      <ul class="list">
+        <li>Электрика и слаботочка: розетки, группы, трассы Wi‑Fi, роутер.</li>
+        <li>Свет: общий, акцентный, подсветка, сценарии и управление.</li>
+        <li>Отделка: уровни полов, стыки покрытий, примыкания, плинтус.</li>
+        <li>Сантехника: выводы воды/канализации, трапы, ревизии.</li>
+        <li>HVAC: вентиляция, приточка, кондиционеры, дренаж.</li>
+        <li>Чертежи: планы расстановки мебели, потолков, развёртки стен.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Гайд для визуализатора</h3>
+      <ul class="list">
+        <li>Палитра и материалы по каждой комнате (покрытия, текстиль, свет).</li>
+        <li>Углы съёмки: общий вид, ключевая стена, зоны хранения.</li>
+        <li>Ссылки на референсы и мудборд, общая атмосфера.</li>
+        <li>Комментарии по мебели на заказ, зазоры, подсветка, фурнитура.</li>
+        <li>Формат выдачи: 4K+, ratio 16:9/9:16, срок и количества ракурсов.</li>
+      </ul>
+      <p class="small muted">Соберите всё в одном месте — визуализатору не придётся искать детали в переписке.</p>
+    </div>
+    <div class="card">
+      <h3>Инструкции для строителей</h3>
+      <ul class="list">
+        <li>Старт: перепланировка, демонтаж, возведение перегородок.</li>
+        <li>Инженерия: электрика, вода, вентиляция, кондиционирование.</li>
+        <li>Черновая отделка: выравнивание, шумоизоляция, тёплый пол.</li>
+        <li>Чистовая: покрытие полов, покраска/обои, плитка, потолки.</li>
+        <li>Финиш: установка света, сантехники, дверей, мебели и текстиля.</li>
+      </ul>
+      <p class="small muted">Добавляйте комментарии прямо в задачи комнаты, чтобы подрядчик видел связку с планом.</p>
+    </div>
+  </section>
+
   <script>
-    const button = document.getElementById('click-btn');
-    const countSpan = document.getElementById('count');
-    let count = 0;
-    button.addEventListener('click', () => {
-      count++;
-      countSpan.textContent = count;
+    const rooms = [];
+    const roomsContainer = document.getElementById('rooms');
+    const form = document.getElementById('room-form');
+    const resetBtn = document.getElementById('reset-form');
+    const sampleBtn = document.getElementById('add-sample');
+    const clearBtn = document.getElementById('clear-rooms');
+
+    const templateRooms = [
+      {
+        name: 'Кухня-гостиная',
+        size: '22.5',
+        height: '2.80',
+        style: 'Современная классика',
+        palette: 'Белый 9016, тёплый серый, латунь, дуб натуральный',
+        moodboard: 'Pinterest: cozy-classic + ссылки на свет',
+        visual: '3 ракурса: общий, обеденная зона, ТВ-зона',
+        tasks: 'Закладные под шторы, подсветка верх/низ кухни, тёплый пол на фартуке, приточка возле окна'
+      },
+      {
+        name: 'Спальня',
+        size: '14.0',
+        height: '2.80',
+        style: 'Спокойный минимализм',
+        palette: 'Молочный, светло-бежевый, акцент графит, орех',
+        moodboard: 'Pinterest: soft-minimal + текстиль',
+        visual: '2 ракурса: кровать + ТВ зона',
+        tasks: 'Гардероб 600 мм, розетки/USB у кровати, закладная под бра, ниша под шторы с подсветкой'
+      },
+      {
+        name: 'Санузел',
+        size: '5.1',
+        height: '2.60',
+        style: 'Современный, нейтральный',
+        palette: 'Светлый камень, тёплый серый, акцент теракота',
+        moodboard: 'Pinterest: warm-stone + латунная фурнитура',
+        visual: '2 ракурса: душ + раковина',
+        tasks: 'Гидроизоляция, трап, уклон пола, ревизии, закладные под стекло'
+      }
+    ];
+
+    const renderRooms = () => {
+      roomsContainer.innerHTML = '';
+      if (!rooms.length) {
+        roomsContainer.innerHTML = '<p class="muted">Добавьте комнаты, чтобы видеть задачи и палитру.</p>';
+        return;
+      }
+
+      rooms.forEach((room, index) => {
+        const card = document.createElement('div');
+        card.className = 'room-card';
+
+        const header = document.createElement('div');
+        header.className = 'room-header';
+        header.innerHTML = `<div><h3>${room.name}</h3><p class="muted small">${room.style || 'Стиль не указан'}</p></div>`;
+
+        const tag = document.createElement('div');
+        tag.className = 'tag';
+        tag.textContent = `${room.size || '—'} м² · ${room.height || '—'} м`;
+        header.appendChild(tag);
+        card.appendChild(header);
+
+        const blocks = [
+          { title: 'Палитра и материалы', value: room.palette },
+          { title: 'Мудборд / референсы', value: room.moodboard },
+          { title: '3D / визуализация', value: room.visual },
+          { title: 'Задачи и ТЗ для строителей', value: room.tasks }
+        ];
+
+        blocks.forEach(block => {
+          const el = document.createElement('p');
+          el.innerHTML = `<strong>${block.title}:</strong> ${block.value || '—'}`;
+          card.appendChild(el);
+        });
+
+        const actions = document.createElement('div');
+        actions.className = 'inline-actions';
+        const copyBtn = document.createElement('button');
+        copyBtn.type = 'button';
+        copyBtn.className = 'ghost';
+        copyBtn.textContent = 'Скопировать блок';
+        copyBtn.addEventListener('click', () => {
+          const text = [
+            `Комната: ${room.name}`,
+            `Площадь: ${room.size || '—'} м², высота: ${room.height || '—'} м`,
+            `Стиль: ${room.style || '—'}`,
+            `Палитра: ${room.palette || '—'}`,
+            `Мудборд: ${room.moodboard || '—'}`,
+            `3D: ${room.visual || '—'}`,
+            `Задачи/ТЗ: ${room.tasks || '—'}`
+          ].join('\n');
+          navigator.clipboard.writeText(text);
+          copyBtn.textContent = 'Скопировано!';
+          setTimeout(() => (copyBtn.textContent = 'Скопировать блок'), 1800);
+        });
+
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'secondary';
+        removeBtn.textContent = 'Удалить';
+        removeBtn.addEventListener('click', () => {
+          rooms.splice(index, 1);
+          renderRooms();
+        });
+
+        actions.append(copyBtn, removeBtn);
+        card.appendChild(actions);
+        roomsContainer.appendChild(card);
+      });
+    };
+
+    const clearForm = () => {
+      form.reset();
+      document.getElementById('room-name').focus();
+    };
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const room = {
+        name: document.getElementById('room-name').value.trim() || 'Без названия',
+        size: document.getElementById('room-size').value,
+        height: document.getElementById('room-height').value,
+        style: document.getElementById('room-style').value.trim(),
+        palette: document.getElementById('room-palette').value.trim(),
+        moodboard: document.getElementById('room-moodboard').value.trim(),
+        visual: document.getElementById('room-visual').value.trim(),
+        tasks: document.getElementById('room-tasks').value.trim()
+      };
+      rooms.push(room);
+      renderRooms();
+      clearForm();
     });
+
+    resetBtn.addEventListener('click', clearForm);
+    clearBtn.addEventListener('click', () => {
+      rooms.length = 0;
+      renderRooms();
+    });
+
+    sampleBtn.addEventListener('click', () => {
+      rooms.push(...templateRooms);
+      renderRooms();
+    });
+
+    renderRooms();
   </script>
 </body>
 </html>
