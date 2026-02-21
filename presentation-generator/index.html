@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Генератор презентаций для интеллектуальных игр</title>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --card: #ffffff;
+      --primary: #3857ff;
+      --primary-soft: #e7ebff;
+      --text: #1f2430;
+      --muted: #667085;
+      --border: #dfe3eb;
+      --ok: #0f9d58;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 28px auto;
+      padding: 0 16px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 6px 18px rgba(16, 24, 40, 0.05);
+    }
+
+    h1 { margin: 0 0 8px; font-size: 28px; }
+    h2 { margin-top: 0; font-size: 20px; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    label { font-weight: 600; font-size: 14px; }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      margin-top: 6px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      background: #fff;
+    }
+
+    textarea { min-height: 90px; resize: vertical; }
+
+    .ideas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .chip.active {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 11px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .primary { background: var(--primary); color: #fff; }
+    .secondary { background: #eef2ff; color: #263cb8; }
+
+    .info {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .ok {
+      color: var(--ok);
+      font-weight: 600;
+      margin-top: 8px;
+    }
+
+    .slides {
+      display: grid;
+      gap: 10px;
+      max-height: 60vh;
+      overflow: auto;
+      margin-top: 10px;
+      padding-right: 4px;
+    }
+
+    .slide {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+      background: #fff;
+    }
+
+    .slide h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: #1d2a56;
+    }
+
+    .slide p,
+    .slide ul { margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <section class="card">
+      <h1>Генератор презентаций для интеллектуальных игр</h1>
+      <p>Сначала выберите идею, тему и настроение — затем приложение сформирует структуру презентации и сохранит её в <code>.pptx</code>.</p>
+    </section>
+
+    <section class="card">
+      <h2>1) Настройки игры</h2>
+      <div class="grid">
+        <div>
+          <label for="gameTitle">Название игры</label>
+          <input id="gameTitle" type="text" value="Квиз-Бум" />
+        </div>
+        <div>
+          <label for="topic">Тема</label>
+          <input id="topic" type="text" value="Наука и мир вокруг" />
+        </div>
+        <div>
+          <label for="mood">Настроение</label>
+          <select id="mood">
+            <option>Весёлое</option>
+            <option>Приключенческое</option>
+            <option>Спокойное</option>
+            <option selected>Соревновательное</option>
+            <option>Фантастическое</option>
+          </select>
+        </div>
+        <div>
+          <label for="age">Возраст</label>
+          <select id="age">
+            <option>7-9</option>
+            <option selected>10-13</option>
+            <option>14-16</option>
+          </select>
+        </div>
+        <div>
+          <label for="questionCount">Количество вопросов (10-12)</label>
+          <input id="questionCount" type="number" min="10" max="12" value="10" />
+        </div>
+      </div>
+
+      <div>
+        <label>Выберите идеи игры</label>
+        <div class="ideas" id="ideaChips"></div>
+        <div class="info">Можно выбрать несколько идей: они попадут в правила и стилистику вопросов.</div>
+      </div>
+
+      <div>
+        <label for="customIdeas">Дополнительные идеи (через запятую)</label>
+        <input id="customIdeas" type="text" placeholder="например: таймер, командный раунд, супер-вопрос" />
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="generateBtn">Сгенерировать презентацию (.pptx)</button>
+        <button class="secondary" id="previewBtn">Обновить предпросмотр</button>
+      </div>
+      <div class="info" id="slideInfo"></div>
+      <div class="ok" id="status"></div>
+    </section>
+
+    <section class="card">
+      <h2>2) Предпросмотр слайдов</h2>
+      <div class="slides" id="slidesPreview"></div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+  <script>
+    const presetIdeas = [
+      'Командная игра',
+      'Игра на скорость',
+      'Раунд с картинками',
+      'Музыкальный раунд',
+      'Логические загадки',
+      'Блиц-вопросы',
+      'Финальный суперраунд'
+    ];
+
+    const ideaChips = document.getElementById('ideaChips');
+    const slidesPreview = document.getElementById('slidesPreview');
+    const statusBox = document.getElementById('status');
+    const slideInfo = document.getElementById('slideInfo');
+
+    const selectedIdeas = new Set(['Командная игра', 'Блиц-вопросы']);
+
+    function renderIdeaChips() {
+      ideaChips.innerHTML = '';
+      presetIdeas.forEach((idea) => {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'chip' + (selectedIdeas.has(idea) ? ' active' : '');
+        chip.textContent = idea;
+        chip.addEventListener('click', () => {
+          if (selectedIdeas.has(idea)) selectedIdeas.delete(idea);
+          else selectedIdeas.add(idea);
+          renderIdeaChips();
+          renderPreview();
+        });
+        ideaChips.appendChild(chip);
+      });
+    }
+
+    function getFormData() {
+      const title = document.getElementById('gameTitle').value.trim() || 'Интеллектуальная игра';
+      const topic = document.getElementById('topic').value.trim() || 'Общая эрудиция';
+      const mood = document.getElementById('mood').value;
+      const age = document.getElementById('age').value;
+      const questionCount = Math.max(10, Math.min(12, Number(document.getElementById('questionCount').value) || 10));
+      document.getElementById('questionCount').value = questionCount;
+
+      const extra = document.getElementById('customIdeas').value
+        .split(',')
+        .map((x) => x.trim())
+        .filter(Boolean);
+
+      const ideas = [...selectedIdeas, ...extra];
+      return { title, topic, mood, age, questionCount, ideas };
+    }
+
+    function buildQuestions(topic, count) {
+      const templates = [
+        (i) => `Вопрос ${i}: Какой факт по теме «${topic}» считается базовым для школьной викторины?`,
+        (i) => `Вопрос ${i}: Что из перечисленного лучше всего объясняет явление в теме «${topic}»?`,
+        (i) => `Вопрос ${i}: Какой ответ наиболее точный в контексте темы «${topic}»?`,
+        (i) => `Вопрос ${i}: Какой термин связан с темой «${topic}» и часто встречается в заданиях?`
+      ];
+
+      const answers = [
+        'Ключевая идея темы и простой пример из жизни.',
+        'Научное объяснение с понятным определением.',
+        'Верный вариант, подтверждённый школьной программой.',
+        'Термин, который объединяет несколько похожих фактов.'
+      ];
+
+      const result = [];
+      for (let i = 1; i <= count; i++) {
+        result.push({
+          q: templates[(i - 1) % templates.length](i),
+          a: answers[(i - 1) % answers.length]
+        });
+      }
+      return result;
+    }
+
+    function buildSlides(data) {
+      const qa = buildQuestions(data.topic, data.questionCount);
+      const slides = [];
+
+      slides.push({
+        title: `${data.title}`,
+        body: [
+          `Тема: ${data.topic}`,
+          `Настроение: ${data.mood}`,
+          `Возраст: ${data.age}`
+        ]
+      });
+
+      slides.push({
+        title: 'Правила игры',
+        body: [
+          '1) Участники делятся на команды или играют индивидуально.',
+          '2) На обсуждение каждого вопроса — 30-60 секунд.',
+          '3) За верный ответ команда получает 1 балл.',
+          '4) Побеждает участник/команда с максимальным числом баллов.',
+          data.ideas.length ? `Идеи раундов: ${data.ideas.join(', ')}.` : 'Идеи раундов: классический квиз.'
+        ]
+      });
+
+      slides.push({
+        title: `${data.title}: вопросы (${data.questionCount})`,
+        body: qa.map((x) => x.q)
+      });
+
+      slides.push({
+        title: `${data.title}: ответы`,
+        body: ['Далее — слайды в формате «один вопрос = один ответ».']
+      });
+
+      qa.forEach((item, idx) => {
+        slides.push({
+          title: `Ответ ${idx + 1}`,
+          body: [item.q, `Ответ: ${item.a}`]
+        });
+      });
+
+      return slides;
+    }
+
+    function renderPreview() {
+      statusBox.textContent = '';
+      const data = getFormData();
+      const slides = buildSlides(data);
+      slideInfo.textContent = `Сформируется ${slides.length} слайдов. При 10 вопросах получается 14 слайдов, при 11 — 15, при 12 — 16.`;
+
+      slidesPreview.innerHTML = '';
+      slides.forEach((slide, index) => {
+        const node = document.createElement('article');
+        node.className = 'slide';
+        const list = slide.body.map((line) => `<li>${line}</li>`).join('');
+        node.innerHTML = `<h3>${index + 1}. ${slide.title}</h3><ul>${list}</ul>`;
+        slidesPreview.appendChild(node);
+      });
+    }
+
+    async function generatePptx() {
+      const data = getFormData();
+      const slides = buildSlides(data);
+
+      const pptx = new PptxGenJS();
+      pptx.layout = 'LAYOUT_WIDE';
+      pptx.author = 'Генератор интеллектуальных игр';
+      pptx.subject = `Презентация игры: ${data.title}`;
+      pptx.title = data.title;
+      pptx.company = 'Codex Playground';
+
+      slides.forEach((s, i) => {
+        const slide = pptx.addSlide();
+        slide.background = { color: i % 2 === 0 ? 'F7F9FF' : 'FFFFFF' };
+
+        slide.addText(s.title, {
+          x: 0.6, y: 0.35, w: 12.2, h: 0.6,
+          fontFace: 'Calibri', fontSize: 29, bold: true, color: '1D2A56'
+        });
+
+        const bulletText = s.body.map((line) => ({ text: line, options: { bullet: { indent: 18 } } }));
+        slide.addText(bulletText, {
+          x: 0.9, y: 1.25, w: 11.6, h: 5.6,
+          fontFace: 'Calibri', fontSize: 20, color: '2B3450', breakLine: true,
+          paraSpaceAfterPt: 12
+        });
+
+        slide.addText(`${i + 1}/${slides.length}`, {
+          x: 11.8, y: 6.8, w: 1.1, h: 0.3,
+          fontSize: 10, color: '667085', align: 'right'
+        });
+      });
+
+      await pptx.writeFile({ fileName: `${data.title.replace(/\s+/g, '_')}_quiz.pptx` });
+      statusBox.textContent = 'Готово! Файл презентации скачан.';
+    }
+
+    document.getElementById('previewBtn').addEventListener('click', renderPreview);
+    document.getElementById('generateBtn').addEventListener('click', generatePptx);
+
+    ['gameTitle', 'topic', 'mood', 'age', 'questionCount', 'customIdeas'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', renderPreview);
+    });
+
+    renderIdeaChips();
+    renderPreview();
+  </script>
+</body>
+</html>
