@@ -1,0 +1,50 @@
+name: Deploy Kro autumn game to GitHub Pages
+
+on:
+  push:
+    branches: ["feature/kro-autumn-game"]
+    paths:
+      - "kro-monthly-games/**"
+      - ".github/workflows/kro-autumn-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  validate-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate game content
+        run: node kro-monthly-games/tests/validate-game.mjs
+
+      - name: Build Pages artifact without changing the existing prototype
+        run: |
+          mkdir -p _site/kro-monthly-games
+          cp -a sherigina-brief/. _site/
+          cp -a kro-monthly-games/. _site/kro-monthly-games/
+          touch _site/.nojekyll
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./_site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

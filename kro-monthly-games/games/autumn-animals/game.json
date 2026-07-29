@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "series": "Игра месяца от Школы-крохи",
+  "title": "Осень в лесу",
+  "subtitle": "Как животные готовятся к холодам",
+  "age": "4–6 лет",
+  "duration": "5–7 минут",
+  "siteUrl": "https://kroxa-school.com/",
+  "storageKey": "kro-monthly-autumn-animals-v1",
+  "intro": {
+    "eyebrow": "Первая игра месяца",
+    "text": "Привет! Я Кро. В лес пришла ранняя осень. Листья начали желтеть, стало прохладнее, а звери готовятся к холодам. Давай узнаем, кто что делает осенью!",
+    "voice": "Привет! Я Кро. В лес пришла ранняя осень. Листья начали желтеть, стало прохладнее, а звери готовятся к холодам. Давай узнаем, кто что делает осенью!"
+  },
+  "images": {
+    "kro": "assets/images/kro.webp",
+    "kroPoses": "assets/images/kro-poses.webp",
+    "fox": "assets/images/fox.webp",
+    "hare": "assets/images/hare.webp",
+    "bear": "assets/images/bear.webp",
+    "squirrel": "assets/images/squirrel.webp",
+    "hedgehog": "assets/images/hedgehog.webp"
+  },
+  "tasks": [
+    {
+      "id": "early-autumn",
+      "type": "multiSelect",
+      "title": "Что бывает в лесу ранней осенью?",
+      "instruction": "Выбери все признаки ранней осени.",
+      "voice": "Что бывает в лесу ранней осенью? Выбери все подходящие картинки.",
+      "success": "Точно! Листья желтеют, появляются грибы, становится прохладнее и чаще идут дожди.",
+      "retry": "Посмотри внимательно: что действительно бывает ранней осенью?",
+      "options": [
+        { "id": "yellow-leaves", "label": "Желтеют листья", "icon": "leaf", "correct": true },
+        { "id": "mushrooms", "label": "Растут грибы", "icon": "mushroom", "correct": true },
+        { "id": "cooler", "label": "Становится прохладнее", "icon": "cool", "correct": true },
+        { "id": "rain", "label": "Чаще идут дожди", "icon": "rain", "correct": true },
+        { "id": "snowman", "label": "Слепили снеговика", "icon": "snowman", "correct": false },
+        { "id": "spring-flowers", "label": "Распустились весенние цветы", "icon": "flower", "correct": false }
+      ]
+    },
+    {
+      "id": "squirrel-pantry",
+      "type": "selectToTarget",
+      "title": "Что белка возьмёт с собой?",
+      "instruction": "Нажми на предмет, а потом на кладовую. На компьютере предмет можно перетащить.",
+      "voice": "Помоги белке сделать запасы. Выбери то, что пригодится ей зимой, и положи в кладовую.",
+      "success": "Отличные запасы! Орехи, жёлуди, шишки и семена пригодятся белке зимой.",
+      "retry": "В кладовой есть лишнее или чего-то не хватает. Давай проверим ещё раз.",
+      "target": {
+        "id": "pantry",
+        "label": "Кладовая белки",
+        "hint": "Сначала выбери предмет",
+        "image": "assets/images/squirrel.webp"
+      },
+      "items": [
+        { "id": "nuts", "label": "Орехи", "icon": "nut", "correct": true },
+        { "id": "acorns", "label": "Жёлуди", "icon": "acorn", "correct": true },
+        { "id": "cones", "label": "Шишки", "icon": "cone", "correct": true },
+        { "id": "seeds", "label": "Семена", "icon": "seeds", "correct": true },
+        { "id": "car", "label": "Машинка", "icon": "car", "correct": false },
+        { "id": "candy", "label": "Конфета", "icon": "candy", "correct": false },
+        { "id": "ball", "label": "Мячик", "icon": "ball", "correct": false }
+      ]
+    },
+    {
+      "id": "animal-actions",
+      "type": "matchPairs",
+      "title": "Кто что делает осенью?",
+      "instruction": "Сначала выбери животное, потом — что оно делает.",
+      "voice": "Соедини каждое животное с тем, как оно готовится к холодам.",
+      "success": "Все пары собраны! Каждый лесной житель готовится к холодам по-своему.",
+      "retry": "Эта пара не подходит. Попробуй выбрать другое действие.",
+      "left": [
+        { "id": "squirrel", "label": "Белка", "image": "assets/images/squirrel.webp" },
+        { "id": "bear", "label": "Медведь", "image": "assets/images/bear.webp" },
+        { "id": "hedgehog", "label": "Ёж", "image": "assets/images/hedgehog.webp" },
+        { "id": "hare", "label": "Заяц", "image": "assets/images/hare.webp" }
+      ],
+      "right": [
+        { "id": "stores", "label": "Делает запасы" },
+        { "id": "den", "label": "Готовит берлогу и много ест" },
+        { "id": "shelter", "label": "Ищет сухое место для зимовки" },
+        { "id": "coat", "label": "Меняет шубку" }
+      ],
+      "pairs": {
+        "squirrel": "stores",
+        "bear": "den",
+        "hedgehog": "shelter",
+        "hare": "coat"
+      }
+    },
+    {
+      "id": "kro-riddle",
+      "type": "riddleReveal",
+      "title": "Отгадай загадку",
+      "instruction": "Ответь вслух — Кро подождёт.",
+      "voice": "По веткам скачет ловко, в дупло несёт орешки. Пушистый хвост мелькает. Кто это?",
+      "riddle": "По веткам скачет ловко,\nВ дупло несёт орешки.\nПушистый хвост мелькает.\nКто это?",
+      "answer": "Белка",
+      "answerImage": "assets/images/squirrel.webp",
+      "speechPrompt": "А теперь скажи полным предложением: как белка готовится к зиме?",
+      "parentHint": "Возможный ответ: «Белка собирает и прячет орехи, семена и шишки».",
+      "success": "Здорово сказано! Ты не только отгадал загадку, но и рассказал о белке.",
+      "steps": {
+        "answered": "Я ответил(а)",
+        "reveal": "Показать ответ",
+        "saidSentence": "Я рассказал(а)"
+      }
+    },
+    {
+      "id": "true-or-false",
+      "type": "trueFalse",
+      "title": "Правда или нет?",
+      "instruction": "Послушай фразу и выбери ответ.",
+      "voice": "Правда или нет? Послушай фразу и выбери ответ.",
+      "success": "Верно! Ты отлично знаешь, как животные готовятся к холодам.",
+      "retry": "Подумай ещё немного — можно выбрать другой ответ.",
+      "labels": {
+        "true": "Правда",
+        "false": "Нет, неправда",
+        "next": "Следующая фраза"
+      },
+      "statements": [
+        {
+          "text": "Белка осенью делает запасы.",
+          "answer": true,
+          "explanation": "Да! Белка собирает орехи, семена, жёлуди и шишки."
+        },
+        {
+          "text": "Медведь осенью улетает в тёплые края.",
+          "answer": false,
+          "explanation": "Нет. Медведь много ест и готовит берлогу."
+        },
+        {
+          "text": "Ёж ищет сухое укрытие.",
+          "answer": true,
+          "explanation": "Правда. В сухом укрытии ёж готовится к зимовке."
+        },
+        {
+          "text": "Заяц к зиме меняет шубку.",
+          "answer": true,
+          "explanation": "Правда. Зимняя шерсть зайца становится светлее и гуще."
+        }
+      ]
+    }
+  ],
+  "final": {
+    "title": "Молодец!",
+    "text": "Теперь ты знаешь, как животные готовятся к холодам. Белка делает запасы, медведь готовит берлогу, ёж ищет укрытие, а заяц меняет шубку.",
+    "voice": "Молодец! Теперь ты знаешь, как животные готовятся к холодам. Ты настоящий знаток осеннего леса!",
+    "award": "Знаток осеннего леса",
+    "replay": "Сыграть ещё раз",
+    "returnToSite": "Вернуться на сайт Школы-крохи"
+  }
+}

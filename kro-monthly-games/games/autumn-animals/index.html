@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Бесплатная игра месяца от Школы-крохи для детей 4–6 лет: как лесные животные готовятся к холодам."
+    />
+    <meta name="theme-color" content="#f5b942" />
+    <title>Осень в лесу — Игра месяца от Школы-крохи</title>
+    <link rel="preload" href="assets/images/kro.webp" as="image" type="image/webp" />
+    <link rel="stylesheet" href="assets/css/game.css" />
+  </head>
+  <body>
+    <div class="forest-backdrop" aria-hidden="true">
+      <span class="tree tree--one"></span>
+      <span class="tree tree--two"></span>
+      <span class="tree tree--three"></span>
+      <span class="leaf leaf--one"></span>
+      <span class="leaf leaf--two"></span>
+      <span class="leaf leaf--three"></span>
+      <span class="leaf leaf--four"></span>
+    </div>
+
+    <main class="game-shell">
+      <header class="game-header">
+        <a class="brand" href="https://kroxa-school.com/" target="_blank" rel="noopener">
+          <span class="brand__mark" aria-hidden="true">К</span>
+          <span>
+            <strong>Школа-кроха</strong>
+            <small>Игра месяца</small>
+          </span>
+        </a>
+        <div class="header-actions">
+          <button class="icon-button sound-button" id="soundToggle" type="button" aria-pressed="false">
+            <span aria-hidden="true">🔈</span>
+            <span class="sound-button__label">Включить звук</span>
+          </button>
+          <button class="icon-button repeat-button is-hidden" id="repeatTask" type="button">
+            <span aria-hidden="true">↻</span>
+            <span>Повторить</span>
+          </button>
+        </div>
+      </header>
+
+      <section id="app" class="game-card" aria-live="off">
+        <div class="loading">
+          <div class="loading__leaf" aria-hidden="true">🍂</div>
+          <p>Кро готовит лесную игру…</p>
+        </div>
+      </section>
+
+      <p class="privacy-note">Без регистрации и сбора данных ребёнка</p>
+    </main>
+
+    <div class="sr-only" id="liveRegion" aria-live="polite" aria-atomic="true"></div>
+    <noscript>
+      <div class="noscript">Для игры нужен JavaScript. Включите его в настройках браузера.</div>
+    </noscript>
+    <script type="module" src="assets/js/game.js"></script>
+  </body>
+</html>
