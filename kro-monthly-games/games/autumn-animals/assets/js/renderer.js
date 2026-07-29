@@ -175,7 +175,7 @@ export function renderCover(app, content, callbacks) {
   const parade = ["fox", "hare", "bear", "squirrel", "hedgehog"]
     .map(
       (key) =>
-        `<img src="${escapeHtml(content.images[key])}" alt="${escapeHtml(
+        `<img data-animal="${escapeHtml(key)}" src="${escapeHtml(content.images[key])}" alt="${escapeHtml(
           { fox: "Лиса", hare: "Заяц", bear: "Медведь", squirrel: "Белка", hedgehog: "Ёж" }[key]
         )}" />`
     )
