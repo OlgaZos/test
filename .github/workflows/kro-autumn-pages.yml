@@ -34,7 +34,7 @@ jobs:
       - name: Build Pages artifact without changing the existing prototype
         run: |
           mkdir -p _site/kro-monthly-games
-          cp -a sherigina-brief/. _site/
+          cp -a shergina-brief/. _site/
           cp -a kro-monthly-games/. _site/kro-monthly-games/
           touch _site/.nojekyll
 
