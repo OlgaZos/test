@@ -23,6 +23,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Improve wording
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('shergina-brief/index.html')
+          text = path.read_text(encoding='utf-8')
+          text = text.replace(
+              'Что ты хотела бы получить в руках после двух месяцев работы?',
+              'Какой результат ты хотела бы получить после двух месяцев работы?'
+          )
+          path.write_text(text, encoding='utf-8')
+          PY
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
