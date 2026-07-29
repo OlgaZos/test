@@ -515,6 +515,7 @@ function renderTrueFalse(app, task, meta, callbacks) {
         return;
       }
 
+      clearFeedback();
       locked = true;
       buttons.forEach((entry) => (entry.disabled = true));
       stage.insertAdjacentHTML(
