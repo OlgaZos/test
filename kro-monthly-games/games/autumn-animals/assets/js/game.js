@@ -1,5 +1,6 @@
 import { trackEvent } from "./analytics.js";
 import {
+  configureSpeech,
   isSoundEnabled,
   isSpeechSupported,
   setSoundEnabled,
@@ -162,9 +163,14 @@ window.addEventListener("pagehide", stopSpeaking);
 
 async function init() {
   try {
-    const response = await fetch("./game.json", { cache: "no-store" });
-    if (!response.ok) throw new Error(`game.json: ${response.status}`);
-    content = await response.json();
+    const [gameResponse, audioResponse] = await Promise.all([
+      fetch("./game.json", { cache: "no-store" }),
+      fetch("./assets/audio/manifest.json", { cache: "no-store" })
+    ]);
+    if (!gameResponse.ok) throw new Error(`game.json: ${gameResponse.status}`);
+    if (!audioResponse.ok) throw new Error(`audio manifest: ${audioResponse.status}`);
+    content = await gameResponse.json();
+    configureSpeech(await audioResponse.json());
     taskIndex = readProgress();
     updateSoundButton();
     trackEvent("game_open", {
