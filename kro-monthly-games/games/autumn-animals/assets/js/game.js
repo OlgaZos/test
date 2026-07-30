@@ -1,4 +1,4 @@
-import { trackEvent } from "./analytics.js";
+import { trackEvent } from "./analytics.js?v=20260730-audio";
 import {
   configureSpeech,
   isSoundEnabled,
@@ -6,8 +6,13 @@ import {
   setSoundEnabled,
   speak,
   stopSpeaking
-} from "./speech.js";
-import { renderCover, renderError, renderFinal, renderTask } from "./renderer.js";
+} from "./speech.js?v=20260730-audio";
+import {
+  renderCover,
+  renderError,
+  renderFinal,
+  renderTask
+} from "./renderer.js?v=20260730-audio";
 
 const app = document.querySelector("#app");
 const soundToggle = document.querySelector("#soundToggle");
@@ -165,7 +170,7 @@ async function init() {
   try {
     const [gameResponse, audioResponse] = await Promise.all([
       fetch("./game.json", { cache: "no-store" }),
-      fetch("./assets/audio/manifest.json", { cache: "no-store" })
+      fetch("./assets/audio/manifest.json?v=20260730-audio", { cache: "no-store" })
     ]);
     if (!gameResponse.ok) throw new Error(`game.json: ${gameResponse.status}`);
     if (!audioResponse.ok) throw new Error(`audio manifest: ${audioResponse.status}`);
