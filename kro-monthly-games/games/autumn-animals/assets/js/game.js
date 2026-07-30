@@ -170,7 +170,7 @@ async function init() {
   try {
     const [gameResponse, audioResponse] = await Promise.all([
       fetch("./game.json", { cache: "no-store" }),
-      fetch("./assets/audio/manifest.json?v=20260730-audio", { cache: "no-store" })
+      fetch("./assets/audio/manifest.json?v=20260730-stress2", { cache: "no-store" })
     ]);
     if (!gameResponse.ok) throw new Error(`game.json: ${gameResponse.status}`);
     if (!audioResponse.ok) throw new Error(`audio manifest: ${audioResponse.status}`);
