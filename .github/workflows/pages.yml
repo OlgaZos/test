@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -23,52 +23,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Install checksum-verified birthday game in its own directory
-        if: ${{ hashFiles('shergina-brief/dima/index.html') == '' }}
-        shell: bash
-        run: |
-          python - <<'PY'
-          import hashlib, io, stat, urllib.request, zipfile
-          from pathlib import Path, PurePosixPath
-          url = 'https://at.adobe.com/phbDMg3cGt09HqaL'
-          expected = '2eefa4b43850a94d98370450a402a57b9945b1bea3238fdb490fa830636bd034'
-          req = urllib.request.Request(url, headers={'User-Agent': 'Dima-birthday-site-publisher/1.0'})
-          with urllib.request.urlopen(req, timeout=90) as response:
-              data = response.read(10_000_001)
-          digest = hashlib.sha256(data).hexdigest()
-          if digest != expected:
-              raise RuntimeError('Archive checksum mismatch: ' + digest)
-          target = Path('shergina-brief/dima')
-          if target.exists():
-              raise RuntimeError('Refusing to replace an existing site directory')
-          with zipfile.ZipFile(io.BytesIO(data)) as archive:
-              members = archive.infolist()
-              if sum(m.file_size for m in members) > 10_000_000:
-                  raise RuntimeError('Archive too large')
-              names = {m.filename for m in members}
-              if not {'index.html', 'style.css', 'app.js'}.issubset(names):
-                  raise RuntimeError('Missing site entry files')
-              for m in members:
-                  p = PurePosixPath(m.filename)
-                  if p.is_absolute() or '..' in p.parts or '\\' in m.filename or stat.S_ISLNK(m.external_attr >> 16):
-                      raise RuntimeError('Unsafe archive member')
-                  if p.parts[0] not in {'index.html','style.css','app.js','README.txt','assets'}:
-                      raise RuntimeError('Unexpected archive member')
-              target.mkdir(parents=True)
-              for m in members:
-                  p = target.joinpath(*PurePosixPath(m.filename).parts)
-                  if m.is_dir():
-                      p.mkdir(parents=True, exist_ok=True)
-                  else:
-                      p.parent.mkdir(parents=True, exist_ok=True)
-                      p.write_bytes(archive.read(m))
-          print('Verified and installed birthday game; original brief untouched.')
-          PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -- shergina-brief/dima
-          git commit -m 'Add tested Dmitry birthday game and cartoon assets'
-          git push origin HEAD:main
+      - name: Read the previously published autumn game without changing it
+        uses: actions/checkout@v4
+        with:
+          ref: bffcee65ba88718ba40f2f0f2c30030402fb1257
+          path: .previous-published-site
+          sparse-checkout: kro-monthly-games
       - name: Improve wording
         run: |
           python - <<'PY'
@@ -81,14 +41,20 @@ jobs:
           )
           path.write_text(text, encoding='utf-8')
           PY
+      - name: Keep all published applications at their existing paths
+        run: |
+          mkdir -p _site/kro-monthly-games
+          cp -a shergina-brief/. _site/
+          cp -a .previous-published-site/kro-monthly-games/. _site/kro-monthly-games/
+          touch _site/.nojekyll
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./shergina-brief
+          path: ./_site
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-# Deployment trigger: 2026-07-29
+# The birthday game lives at /dima/. Previously published URLs are preserved.
