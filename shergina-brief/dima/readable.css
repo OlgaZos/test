@@ -1,0 +1,361 @@
+/* Larger fonts for the birthday game; original artwork and layout retained. */
+body{font-size:18px}
+.brand{font-size:16px}
+.brand b{font-size:31px}
+.brand small{font-size:14px}
+.date{font-size:18px}
+h1{font-size:82px}
+h2{font-size:40px}
+h3{font-size:23px}
+.eyebrow{font-size:14px}
+.subtitle{font-size:25px}
+.description{font-size:20px}
+.tag{font-size:15px}
+.btn{font-size:19px}
+.textbtn{font-size:16px}
+.speech{font-size:16px}
+.star{font-size:42px}
+.intro-strip{font-size:18px}
+.resume{font-size:18px}
+.step{font-size:15px}
+.route li{font-size:21px}
+.route li.done:after{font-size:13px}
+.scene-label{font-size:14px}
+.scene-note{font-size:18px}
+.scene-symbol{font-size:28px}
+.activity h2{font-size:40px}
+.lead{font-size:18px}
+.option{font-size:18px}
+.option .mark{font-size:16px}
+.feedback strong{font-size:18px}
+.feedback p{font-size:16px}
+.next-note{font-size:15px}
+.frogbar{font-size:16px}
+.frogbar .textbtn{font-size:15px}
+.frog-cell{font-size:32px}
+.frog-comment{font-size:16px}
+.wish{font-size:18px}
+.wish span:first-child{font-size:26px}
+.wishcount{font-size:16px}
+.wishnote{font-size:16px}
+.footnote{font-size:14px}
+.result-head h1{font-size:48px}
+.result-head p{font-size:18px}
+.result-head .eyebrow{font-size:14px}
+.greeting h2,.collection h2{font-size:28px}
+.fieldlabel{font-size:16px}
+.input,.message{font-size:20px}
+.message{font-size:19px}
+.counter{font-size:14px}
+.sendnote{font-size:16px}
+.utilities .btn{font-size:16px}
+.fallback{font-size:16px}
+.privacy{font-size:14px}
+.badges li{font-size:16px}
+.badges span{font-size:24px}
+.smallprint{font-size:16px}
+.friendbox h3{font-size:21px}
+.friendbox p{font-size:18px}
+.friendbox .btn{font-size:18px}
+footer{font-size:15px}
+footer .textbtn{font-size:15px}
+.dialog-head h2{font-size:32px}
+.close{font-size:27px}
+dialog p{font-size:18px}
+.sources{font-size:16px}
+.art-links{font-size:16px}
+.toast{font-size:16px}
+@media(max-width:850px){
+h1{font-size:58px}
+.speech{font-size:14px}
+.subtitle{font-size:22px}
+.description{font-size:18px}
+.activity h2{font-size:34px}
+.scene-note{font-size:18px}
+.result-head h1{font-size:40px}
+}
+@media(max-width:600px){
+.brand{font-size:14px}
+.brand b{font-size:28px}
+.brand small{font-size:13px}
+.date{font-size:15px}
+.hero h1{font-size:54px}
+.eyebrow{font-size:13px}
+.subtitle{font-size:23px}
+.description{font-size:18px}
+.tag{font-size:14px}
+.hero .textbtn{font-size:15px}
+.speech{font-size:14px}
+.speech.two{font-size:13px}
+.star{font-size:31px}
+.intro-strip{font-size:16px}
+.step{font-size:13px}
+.route li{font-size:18px}
+.scene-label{font-size:14px}
+.scene-note{font-size:18px}
+.scene-symbol{font-size:28px}
+.activity h2{font-size:32px}
+.activity .eyebrow{font-size:13px}
+.lead{font-size:18px}
+.option{font-size:18px}
+.option .mark{font-size:15px}
+.feedback strong{font-size:18px}
+.feedback p{font-size:16px}
+.nextrow .btn{font-size:18px}
+.next-note{font-size:14px}
+.frog-cell{font-size:31px}
+.frog-comment{font-size:15px}
+.wish{font-size:16px}
+.wish span:first-child{font-size:25px}
+.wishnote{font-size:15px}
+.result-head h1{font-size:32px}
+.result-head p{font-size:16px}
+.result-head .eyebrow{font-size:12px}
+.title-badge{font-size:13px}
+.greeting h2,.collection h2{font-size:26px}
+.message{font-size:19px}
+.input{font-size:20px}
+.sendnote{font-size:15px}
+.utilities .btn{font-size:15px}
+.badges li{font-size:14px}
+footer{font-size:14px}
+footer .textbtn{font-size:14px}
+.dialog-head h2{font-size:28px}
+.resume{font-size:16px}
+}
+@media(max-width:355px){
+.hero h1{font-size:48px}
+.route li{font-size:18px}
+.date{font-size:14px}
+.result-head h1{font-size:30px}
+}
+/* Larger type without squeezing buttons, captions or the greeting. */
+.hero > div,.activity,.greeting,.collection,.result-head > div{min-width:0}
+
+.wishes{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+.wish{min-width:0}
+
+.wish span:last-child{min-width:0}
+
+.badges li{min-width:0;overflow-wrap:break-word}
+
+.option,.wish,.btn{overflow-wrap:break-word}
+
+.btn{min-height:56px}
+
+.textbtn{min-height:44px}
+
+.lead,.option{font-size:20px}
+
+.feedback p,.smallprint,.friendbox p{font-size:18px}
+
+.message{font-size:20px;min-height:330px;line-height:1.65;overflow-y:hidden}
+
+.input{font-size:20px}
+
+.fieldlabel{font-size:18px}
+
+.counter{flex-wrap:wrap;row-gap:4px}
+
+.result-head h1{font-size:clamp(32px,4.8vw,50px);line-height:1.16}
+
+.result-head p{font-size:18px;line-height:1.6}
+
+.badges{grid-template-columns:1fr 1fr}
+
+.badges li{font-size:17px;min-height:114px;line-height:1.45}
+
+.speech{font-size:15px}
+
+.speech.two{font-size:14px}
+
+.nextrow{flex-wrap:wrap}
+
+.nextrow .btn{max-width:100%}
+
+.routebar{flex-wrap:wrap}
+
+.sendnote,.fallback{font-size:16px}
+
+.privacy,.footnote{font-size:14px;line-height:1.6}
+
+.utilities .btn{font-size:16px;min-height:50px;flex-basis:170px}
+
+.dialog-head h2{line-height:1.2}
+
+dialog p,.sources,.art-links{font-size:17px}
+
+.frogbar{flex-wrap:wrap;font-size:17px}
+
+.frogbar .textbtn{font-size:16px;min-height:44px}
+
+@media(max-width:850px){
+.hero{grid-template-columns:1.1fr 1fr}
+
+.hero h1{font-size:58px}
+
+.final-grid{display:flex;flex-direction:column}
+
+.result-head{gap:20px}
+
+}
+
+@media(max-width:600px){
+header{flex-wrap:wrap;gap:10px;padding:18px}
+
+.brand{font-size:13px}
+
+.brand small{font-size:12px}
+
+.date{font-size:14px}
+
+.hero h1{font-size:clamp(46px,13.8vw,72px);letter-spacing:-2px;line-height:1.04}
+
+.hero .ctas{align-items:stretch}
+
+.hero .ctas .btn{min-height:56px;font-size:18px;flex:0 1 auto}
+
+.hero .textbtn{font-size:16px;min-height:50px}
+
+.description{font-size:19px}
+
+.subtitle{font-size:23px}
+
+.tag{font-size:14px}
+
+.hero-art{height:310px}
+
+.figure.science{height:266px}
+
+.figure.host{height:218px}
+
+.figure.traveler{height:221px}
+
+.speech{font-size:14px;max-width:152px}
+
+.speech.two{font-size:13px;max-width:192px;bottom:9px}
+
+.intro-strip{font-size:17px}
+
+.intro-strip .faces{display:none}
+
+.step{font-size:14px;letter-spacing:.3px}
+
+.route li{width:30px;height:30px}
+
+.scene{height:auto;min-height:236px;padding:24px 20px 52px}
+
+.scene:before{top:auto;bottom:0}
+
+.scene-label{font-size:14px;line-height:1.4;max-width:52%;letter-spacing:.8px}
+
+.scene-note{font-size:18px;line-height:1.5;max-width:50%}
+
+.actor{height:230px;width:48%}
+
+.scene[data-role=nature] .actor{height:196px;width:48%}
+
+.scene-symbol{font-size:26px}
+
+.activity{padding:26px 20px}
+
+.activity h2{font-size:34px;line-height:1.15}
+
+.activity .eyebrow{font-size:13px;letter-spacing:.9px}
+
+.lead,.option{font-size:18px}
+
+.option{min-height:76px;gap:10px;line-height:1.5}
+
+.feedback{align-items:flex-start}
+
+.feedback strong,.feedback p{font-size:18px}
+
+.feedback img{margin-top:3px}
+
+.nextrow{gap:12px}
+
+.nextrow .btn{font-size:18px;min-height:54px;flex:1 0 180px}
+
+.next-note{font-size:14px}
+
+.frog-cell{min-height:62px}
+
+.frog-comment{font-size:16px}
+
+.wish{font-size:18px;min-height:112px;padding:12px 10px;line-height:1.4;flex-direction:column;align-items:flex-start;gap:8px}
+
+.wish[aria-pressed=true]{padding:11px 9px}
+
+.wish span:first-child{font-size:24px}
+
+.wishcount,.wishnote{font-size:16px}
+
+.result-head{display:block;padding:24px 20px}
+
+.result-head img{float:right;width:76px;height:87px;margin:0 0 10px 14px}
+
+.result-head h1{font-size:34px;letter-spacing:-1px}
+
+.result-head p{font-size:18px;clear:both}
+
+.result-head .eyebrow{font-size:13px;letter-spacing:.5px;clear:none}
+
+.greeting h2,.collection h2{font-size:28px;line-height:1.2}
+
+.message{font-size:19px;min-height:350px}
+
+.input{font-size:19px}
+
+.send{font-size:18px}
+
+.utilities .btn{font-size:16px;min-height:52px}
+
+.badges{grid-template-columns:1fr 1fr;gap:10px}
+
+.badges li{font-size:17px;min-height:109px;padding:13px}
+
+.smallprint,.friendbox p{font-size:18px}
+
+.friendbox h3{font-size:23px}
+
+.friendbox .btn{font-size:18px;min-height:54px}
+
+footer{font-size:14px;flex-wrap:wrap;gap:8px}
+
+footer>span{max-width:none}
+
+footer .textbtn{font-size:14px;min-height:44px;padding-top:9px}
+
+.toast{font-size:16px}
+
+}
+
+@media(max-width:355px){
+header{padding:16px}
+
+.date{font-size:13px}
+
+.brand{font-size:12px}
+
+.brand small{font-size:11px}
+
+.activity{padding:24px 16px}
+
+.activity h2{font-size:32px}
+
+.wish{gap:6px;font-size:17px}
+
+.wish span:first-child{font-size:23px}
+
+.badges{grid-template-columns:1fr}
+
+.result-head h1{font-size:31px}
+
+.result-head img{width:64px;height:76px}
+
+.scene-note{font-size:17px}
+
+}
+
