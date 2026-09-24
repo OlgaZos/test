@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Гранты — MVP помощник НКО</title>
+  <style>
+    :root { --bg:#f5f7fb; --card:#fff; --line:#dbe2ee; --text:#1f2937; --muted:#667085; --primary:#3455ff; --soft:#e9eeff; --ok:#0f9d58; }
+    * { box-sizing: border-box; }
+    body { margin:0; background:var(--bg); color:var(--text); font-family:Inter,system-ui,sans-serif; }
+    main { max-width:1120px; margin:24px auto; padding:0 16px 28px; display:grid; gap:14px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; }
+    h1,h2,h3 { margin:0 0 8px; }
+    p { margin:0 0 8px; }
+    .muted { color:var(--muted); }
+    .grid { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+    .two { display:grid; gap:12px; grid-template-columns:1fr 1fr; }
+    @media (max-width:900px){ .two{ grid-template-columns:1fr; } }
+    label { font-weight:600; font-size:14px; }
+    textarea,input,select { width:100%; margin-top:6px; border:1px solid var(--line); border-radius:10px; padding:10px 12px; font-size:14px; }
+    textarea { min-height:110px; resize:vertical; }
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .chip { border:1px solid var(--line); border-radius:999px; background:#fff; padding:7px 12px; font-size:13px; cursor:pointer; }
+    .chip.active { border-color:var(--primary); background:var(--soft); color:var(--primary); font-weight:600; }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:10px; }
+    button { border:0; border-radius:10px; padding:11px 14px; cursor:pointer; font-weight:700; }
+    .primary{ background:var(--primary); color:#fff; }
+    .secondary{ background:#ecf1ff; color:#2741bf; }
+    .list{ display:grid; gap:10px; margin-top:10px; }
+    .item{ border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:#fff; }
+    .badge{ display:inline-block; font-size:12px; padding:3px 8px; border-radius:999px; background:#eef2ff; color:#2944c5; margin-right:6px; margin-bottom:6px; }
+    .ok{ color:var(--ok); font-weight:600; }
+    .checks{ display:flex; flex-wrap:wrap; gap:12px; margin-top:8px; }
+    .checks label{ font-weight:500; }
+    pre { white-space:pre-wrap; background:#fafcff; border:1px solid var(--line); border-radius:12px; padding:12px; margin:10px 0 0; }
+  </style>
+</head>
+<body>
+<main>
+  <section class="card">
+    <h1>Проект «Гранты» — MVP для НКО</h1>
+    <p><strong>Выбрано:</strong> веб-приложение с экспортом в <strong>.docx</strong> и напоминаниями о дедлайнах за 5 дней.</p>
+    <p class="muted">Поток: источники сигналов → ранжирование проблем → подбор грантодателя → черновик заявки.</p>
+  </section>
+
+  <section class="card">
+    <h2>1) Профиль НКО</h2>
+    <div class="grid">
+      <div><label for="ngoFocus">Направление проекта</label><input id="ngoFocus" value="Поддержка подростков и семей" /></div>
+      <div><label for="ngoStrength">Сильные стороны НКО</label><input id="ngoStrength" value="Обучающие программы, наставничество, партнерства со школами" /></div>
+      <div><label for="ngoRegion">Регион</label><input id="ngoRegion" value="Тверская область" /></div>
+    </div>
+  </section>
+
+  <section class="card two">
+    <div>
+      <h2>2) Источники и сигналы проблем</h2>
+      <p class="muted">Отмеченные источники учитываются в отчёте анализа.</p>
+      <div class="checks" id="sourceChecks"></div>
+      <label for="signals">Сырые сигналы (по одному на строку)</label>
+      <textarea id="signals">ВК: родители жалуются на нехватку бесплатных кружков.
+TG: подростки пишут о стрессе и тревожности.
+Local news: в районе нет доступных секций после уроков.
+Отзывы формы: не хватает экологических мероприятий в школах.
+Новости: обсуждают перегруженные контейнерные площадки.</textarea>
+      <div class="actions"><button class="primary" id="analyzeBtn">Анализировать</button></div>
+      <p class="muted" id="analysisInfo"></p>
+      <div class="list" id="problemList"></div>
+    </div>
+
+    <div>
+      <h2>3) Подходящие грантодатели</h2>
+      <p class="muted">Выберите тематики проблем для фильтра.</p>
+      <div class="chips" id="themeChips"></div>
+      <div class="actions"><button class="secondary" id="fundersBtn">Обновить подбор</button></div>
+      <div class="list" id="funderList"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>4) Черновик заявки + .docx</h2>
+    <div class="actions">
+      <button class="primary" id="draftBtn">Сформировать черновик</button>
+      <button class="secondary" id="docxBtn">Скачать .docx</button>
+    </div>
+    <p id="draftStatus"></p>
+    <pre id="draftOutput">Нажмите «Сформировать черновик».</pre>
+  </section>
+
+  <section class="card two">
+    <div>
+      <h3>5) Напоминания о дедлайнах (за 5 дней)</h3>
+      <label for="notifyChannel">Канал уведомлений</label>
+      <select id="notifyChannel">
+        <option value="email" selected>Email (проще в MVP)</option>
+        <option value="telegram">Telegram</option>
+      </select>
+      <div class="actions"><button class="secondary" id="remindersBtn">Сформировать напоминания</button></div>
+      <div class="list" id="reminderList"></div>
+    </div>
+    <div>
+      <h3>Рекомендация по вашему сценарию</h3>
+      <ul>
+        <li>На MVP проще и надежнее стартовать с <strong>Email</strong>, затем добавить Telegram-бота.</li>
+        <li>Роль на первом этапе: только <strong>Заявитель</strong>.</li>
+        <li>Подключаемые источники: VK, Telegram, local news, отзывы форм, общие новости.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<script src="https://unpkg.com/docx@8.5.0/build/index.umd.js"></script>
+<script>
+  const sources = ['ВК', 'Local news', 'Отзывы из форм', 'Telegram', 'Новости'];
+  const taxonomy = {
+    Образование: ['школ','обуч','круж','урок','подрост','секц'],
+    Экология: ['эколог','мусор','контейнер','отход','переработ'],
+    'Психологическое здоровье': ['стресс','тревож','выгора','психолог'],
+    'Социальная поддержка': ['семь','помощ','досуг','поддержк','доступ']
+  };
+
+  const funders = [
+    { name:'Фонд президентских грантов', themes:['Образование','Социальная поддержка'], deadline:'2026-04-15', recommendation:'Социальный эффект, KPI, устойчивость.' },
+    { name:'Президентский фонд культурных инициатив', themes:['Образование','Социальная поддержка'], deadline:'2026-03-28', recommendation:'Культурная новизна и медиаплан проекта.' },
+    { name:'Региональные гранты + софинансирование ФПГ', themes:['Образование','Экология','Социальная поддержка'], deadline:'2026-05-10', recommendation:'Локальная проблема, партнёры региона, реалистичный бюджет.' },
+    { name:'Фонд Потанина', themes:['Образование','Психологическое здоровье'], deadline:'2026-04-03', recommendation:'Инновационность решения и потенциал масштабирования.' },
+    { name:'Гранты Минпросвещения', themes:['Образование','Психологическое здоровье'], deadline:'2026-04-25', recommendation:'Методическая часть, измеримые образовательные результаты.' }
+  ];
+
+  const selectedThemes = new Set(['Образование','Социальная поддержка']);
+  const selectedSources = new Set(['ВК','Local news','Отзывы из форм','Telegram','Новости']);
+  let latestDraft = 'Нажмите «Сформировать черновик».';
+
+  const sourceChecks = document.getElementById('sourceChecks');
+  const problemList = document.getElementById('problemList');
+  const funderList = document.getElementById('funderList');
+  const reminderList = document.getElementById('reminderList');
+  const analysisInfo = document.getElementById('analysisInfo');
+  const draftOutput = document.getElementById('draftOutput');
+  const draftStatus = document.getElementById('draftStatus');
+
+  function normalize(text){ return text.toLowerCase(); }
+
+  function renderSources(){
+    sourceChecks.innerHTML = '';
+    sources.forEach((src) => {
+      const id = `src-${src.replace(/\s+/g,'-')}`;
+      const wrap = document.createElement('label');
+      wrap.innerHTML = `<input type="checkbox" id="${id}" ${selectedSources.has(src) ? 'checked' : ''}/> ${src}`;
+      const input = wrap.querySelector('input');
+      input.addEventListener('change', () => {
+        if (input.checked) selectedSources.add(src); else selectedSources.delete(src);
+      });
+      sourceChecks.appendChild(wrap);
+    });
+  }
+
+  function analyzeSignals(){
+    const lines = document.getElementById('signals').value.split('\n').map(s => s.trim()).filter(Boolean);
+    const scoreByTheme = Object.fromEntries(Object.keys(taxonomy).map((t) => [t, 0]));
+
+    lines.forEach((line) => {
+      const low = normalize(line);
+      Object.entries(taxonomy).forEach(([theme, keys]) => {
+        if (keys.some((w) => low.includes(w))) scoreByTheme[theme] += 1;
+      });
+    });
+
+    const ranked = Object.entries(scoreByTheme).map(([theme, score]) => ({theme, score})).filter((x) => x.score > 0).sort((a,b) => b.score - a.score);
+    problemList.innerHTML = '';
+
+    if (!ranked.length) {
+      analysisInfo.textContent = 'Сигналы не распознаны. Добавьте более конкретные формулировки.';
+      return [];
+    }
+
+    analysisInfo.innerHTML = `<span class="ok">Сигналов: ${lines.length}. Источники: ${Array.from(selectedSources).join(', ')}.</span>`;
+    ranked.forEach((entry, idx) => {
+      const el = document.createElement('div');
+      el.className = 'item';
+      el.innerHTML = `<strong>#${idx + 1} ${entry.theme}</strong><p class="muted">Совпадений: ${entry.score}</p>`;
+      problemList.appendChild(el);
+    });
+
+    selectedThemes.clear();
+    ranked.slice(0,2).forEach((item) => selectedThemes.add(item.theme));
+    renderThemeChips();
+    renderFunders();
+    return ranked;
+  }
+
+  function renderThemeChips(){
+    const chips = document.getElementById('themeChips');
+    chips.innerHTML = '';
+    Object.keys(taxonomy).forEach((theme) => {
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'chip' + (selectedThemes.has(theme) ? ' active' : '');
+      chip.textContent = theme;
+      chip.addEventListener('click', () => {
+        if (selectedThemes.has(theme)) selectedThemes.delete(theme); else selectedThemes.add(theme);
+        renderThemeChips();
+      });
+      chips.appendChild(chip);
+    });
+  }
+
+  function renderFunders(){
+    funderList.innerHTML = '';
+    const chosen = Array.from(selectedThemes);
+    const filtered = funders.filter((f) => f.themes.some((t) => chosen.includes(t))).sort((a,b) => new Date(a.deadline) - new Date(b.deadline));
+    if (!filtered.length) { funderList.innerHTML = '<div class="item">Нет подходящих грантодателей.</div>'; return; }
+
+    filtered.forEach((f) => {
+      const tags = f.themes.map((t) => `<span class="badge">${t}</span>`).join('');
+      const el = document.createElement('div');
+      el.className = 'item';
+      el.innerHTML = `<strong>${f.name}</strong><p>${tags}</p><p class="muted">Дедлайн: ${f.deadline}</p><p class="muted">Методрекомендации: ${f.recommendation}</p>`;
+      funderList.appendChild(el);
+    });
+  }
+
+  function createDraft(){
+    const ranked = analyzeSignals();
+    const topTheme = ranked[0]?.theme || 'Социальная поддержка';
+    const matchedFunder = funders.find((f) => f.themes.includes(topTheme)) || funders[0];
+    const ngoFocus = document.getElementById('ngoFocus').value.trim();
+    const ngoStrength = document.getElementById('ngoStrength').value.trim();
+    const ngoRegion = document.getElementById('ngoRegion').value.trim();
+
+    latestDraft = `Название проекта:\n«${ngoFocus} в ${ngoRegion}»\n\nПроблема:\nНа основе сигналов из источников (${Array.from(selectedSources).join(', ')}) приоритетная тематика — «${topTheme}».\n\nКомпетенции заявителя:\n${ngoStrength}.\n\nЦелевая аудитория:\nЖители ${ngoRegion}, в том числе семьи и подростки.\n\nРешение:\nЗапуск практических мероприятий/сервисов, закрывающих выявленную проблему, с измеримыми KPI.\n\nРекомендуемый грантодатель:\n${matchedFunder.name}\n\nЧто важно по методрекомендациям:\n${matchedFunder.recommendation}`;
+
+    draftOutput.textContent = latestDraft;
+    draftStatus.innerHTML = '<span class="ok">Черновик сформирован. Можно скачивать .docx.</span>';
+    return latestDraft;
+  }
+
+  async function exportDocx(){
+    if (latestDraft.startsWith('Нажмите')) createDraft();
+    if (!window.docx) {
+      draftStatus.textContent = 'Не удалось загрузить библиотеку docx. Проверьте интернет и попробуйте снова.';
+      return;
+    }
+
+    const { Document, Paragraph, TextRun, Packer } = window.docx;
+    const paragraphs = latestDraft.split('\n').map((line) => new Paragraph({ children: [new TextRun(line || ' ')] }));
+    const doc = new Document({ sections: [{ children: paragraphs }] });
+    const blob = await Packer.toBlob(doc);
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `grant-draft-${new Date().toISOString().slice(0,10)}.docx`;
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  function renderReminders(){
+    reminderList.innerHTML = '';
+    const channel = document.getElementById('notifyChannel').value;
+    funders
+      .slice()
+      .sort((a,b) => new Date(a.deadline) - new Date(b.deadline))
+      .forEach((f) => {
+        const date = new Date(f.deadline);
+        date.setDate(date.getDate() - 5);
+        const remindDate = date.toISOString().slice(0,10);
+        const el = document.createElement('div');
+        el.className = 'item';
+        el.innerHTML = `<strong>${f.name}</strong><p class="muted">Напомнить: ${remindDate} (${channel})</p>`;
+        reminderList.appendChild(el);
+      });
+  }
+
+  document.getElementById('analyzeBtn').addEventListener('click', analyzeSignals);
+  document.getElementById('fundersBtn').addEventListener('click', renderFunders);
+  document.getElementById('draftBtn').addEventListener('click', createDraft);
+  document.getElementById('docxBtn').addEventListener('click', exportDocx);
+  document.getElementById('remindersBtn').addEventListener('click', renderReminders);
+
+  renderSources();
+  renderThemeChips();
+  renderFunders();
+  analyzeSignals();
+  renderReminders();
+</script>
+</body>
+</html>
